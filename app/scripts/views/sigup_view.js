@@ -1,4 +1,6 @@
+// NATIVE PARSE BLOCK
 var user = new Parse.User();
+
 user.set("username", "my name");
 user.set("password", "my pass");
 user.set("email", "email@example.com");
@@ -15,3 +17,6 @@ user.signUp(null, {
     alert("Error: " + error.code + " " + error.message);
   }
 });
+
+///////////////////////////////////////////////////////////////////
+
