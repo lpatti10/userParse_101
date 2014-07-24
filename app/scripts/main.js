@@ -8,6 +8,7 @@ Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDN
 // });
 
 // NATIVE PARSE CODE BLOCK
+//in place of object. it is extendable too.
 var user = new Parse.User();
 
 user.set("username", "my name");
@@ -28,7 +29,15 @@ user.signUp(null, {
 });
 
 ///////////////////////////////////////////////////////////////////
-// var user = new Parse.User();
+
+//Example of extending (adding new column to user table)
+// var user = new Parse.User({
+//   defaults: {
+//     favorite: 'jack'
+//   }
+
+      //can also add initialize other functions here
+// });
 
 
 

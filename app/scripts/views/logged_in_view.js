@@ -18,7 +18,7 @@ Parse.User.logIn("myname", "mypass", {
     
 //      // "submit #formID": "submitForm",
 //      // "click .post_title": "seeFullpost",
-//      // "click .delete": "omitPost"
+//     
 //   },
 
 //   initialize: function (attrs) {
