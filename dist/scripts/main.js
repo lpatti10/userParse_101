@@ -1,105 +1,142 @@
-// // NATIVE PARSE CODE BLOCK
-// Parse.User.logIn("myname", "mypass", {
-//   success: function(user) {
-//     // Do stuff after successful login.
-//   },
-//   error: function(user, error) {
-//     // The login failed. Check error to see why.
-//   }
-// });
+var Book = Backbone.Model.extend({
+	idAttribute: '_id',
 
-
-
-// ////////////////////////////////////////////////////////////
-
-// el: ".hero-unit",
-
-//   events: {
-    
-//      // "submit #formID": "submitForm",
-//      // "click .post_title": "seeFullpost",
-//     
-//   },
-
-//   initialize: function (attrs) {
-//     // this.options = attrs;
-//     // this.render(); // This will run the `render` function below
-//     // this.collection.on('change', this.render, this); // This watches my collection for when I add/update a post
-//     // this.collection.on('destroy', this.render, this); // This watches my collection for when I delete a post
-//     // this.collection.on('add', this.render, this); // 'Change' doesn't watch for 'adds'
-//   }, 
-
-
-//  render: function(){
-//     // //Pass data to template
-//     // var template = Handlebars.compile($('#post_feed').html()); // Grabs my handlebars temlate from my index.html file.
-//     // var rendered = template({ posts: this.collection.toJSON() }); // Renders out a block of HTML to be used in my code
-//     // this.$el.find(".post_list ul").html(rendered);
-
-//     // //EXPERIMENTAL WEDNESDAY TO ATTEMPT REPAIR OF BACK BUTTON
-//     // $(".hero-unit").show();
-
-//     // //EXPERIMENTAL
-//     // $(".full_post").hide();
-    
-//     // return this;
-//   },
-
-// logout: function (event){ 
-//     console.log("Prompting logout");
-//     event.preventDefault();
-//     event.stopPropagation();
-
-//     // These 2 lines, get my ID and then route to my URL with the ID in it
-//     // My router then sees that and runs the proper function based on the routes I set up.
-//     // var post_id = $(event.target).attr('id');
-
-//     // window.router_instance.navigate('#post/'+post_id, { trigger: true });
-//   },     
-
-
-
-
-
-
-
-
-
-Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDNpp1KaQucgsznkISsEB1aGi");
-
-console.log('parse sees your app');
-
-$('#signupBtn').on('submit', function(event) {
-	
-	// event.preventDefault();
-	
-	console.log('here');
+	defaults: {
+		title: '',
+		author: '',
+		read: false
+	}
 
 });
+var Library = Backbone.Collection.extend ({
+
+	model: Book,
+	url:"http://tiy-atl-fe-server.herokuapp.com/collections/library"
+
+});
+var LoggedInView = Backbone.View.extend ({
+
+	el: '.hero-unit',
+
+	events: {
+		// 'click .read' : 'toggleRead'
+	},
+
+	initialize: function (){
+		this.render ();
+		this.collection.on ('change', this.render, this);
+	},
+
+	render:function (){
+		// var template = Handlebars.compile($('#shelf_template').html());
+		// var rendered = template({ data: this.collection.toJSON()});
+		// this.$el.html(rendered);
+		//Hide form vs. sep. view based on no dynamic content
+		// $("#signupForm").hide();
+		// $("#loginForm").hide();
+		// $(".testBox").show();
+	}
+
+	// toggleRead: function(event) {
+	// 	event.preventDefault();
+	// 	event.stopPropagation();
+	// 	var doneClicked = $(event.target).attr('id');
+	// 	console.log(doneClicked);
+	// 	var singleBook = this.collection.get(doneClicked);
+	// 	singleBook.set({read: true});
+	// 	singleBook.save();
+	// }
+
+});
+// CONSTRUCTOR-ONLY FILE
+
+// Backbone.Router.extend(properties, [classProperties]) 
+// Get started by creating a custom router class. 
+// Define actions that are triggered when certain URL 
+// fragments are matched, and provide a routes hash that 
+// pairs routes to actions. Note that you'll want to avoid 
+// using a leading slash in your route definitions:
+
+var LibRouter = Backbone.Router.extend ({
+
+	routes: {
+		'' : 'home',
+		'user/:username' : 'logged_in'
+	},
+
+	home: function () {
+		$(".testBox").hide();
+		new LoggedInView({ collection: new_library});
+	},
+
+	logged_in: function () {
+		$(".testBox").show();
+		// new LibraryBookView({ collection: new_library});
+	}
+
+});
+Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDNpp1KaQucgsznkISsEB1aGi");
+
+$('#signupForm').on('submit', function(event) {
 	
-// 	//in place of model object. it is extendable too.
-// 	var user = new Parse.User();
+	event.preventDefault();
+	
+	//In place of model object... it is extendable too.
+	var user = new Parse.User();
 
-// 	// user.set("username", "my name");
-// 	user.set("username", $(this).find('.username').val());
-// 	console.log('gotcha username');
+	user.set("username", $(this).find('.username').val());
+	console.log('gotcha username');
 
-// 	// user.set("password", "my pass");
-// 	user.set("password", $(this).find('.password').val());
-// 	console.log('gotcha password');
-
+	user.set("password", $(this).find('.password').val());
+	console.log('gotcha password');
 	 
-// 	user.signUp(null, {
-// 	  success: function(user) {
-// 	    // redirect to logged-in view here
-// 	  },
-// 	  error: function(user, error) {
-// 	    // Show the error message somewhere and let the user try again.
-// 	    alert("Error: " + error.code + " " + error.message);
-// 	  }
-// 	});
-// });
+	user.signUp(null, {
+	  success: function(user) {
+	    // redirect to logged-in view here
+	  },
+	  error: function(user, error) {
+	    // Show the error message somewhere and let the user try again.
+	    alert("Error: " + error.code + " " + error.message);
+	  }
+	});
+
+	$(this).trigger('reset');
+
+});
+
+/////////////////////////////////////////////////////////////
+
+$('#loginForm').on('submit', function(event) {
+	
+	event.preventDefault();
+
+	Parse.User.logIn($(this).find('.username').val(), $(this).find('.password').val(), {		
+	  success: function(user) {
+	    alert("success");
+	    
+	    //Navigate back home after form is complete.
+			// window.bookRouter.navigate('', { trigger: true });
+	  },
+
+	  error: function(user, error) {
+	    // The login failed. Check error to see why.
+	  }
+	});
+
+		$(this).trigger('reset');
+
+});
+
 ///////////////////////////////////////////////////////////////////
+
+var new_library = new Library();
+
+new_library.fetch().done(function(){
+
+	window.bookRouter = new LibRouter ();
+	Backbone.history.start();
+
+});
 
 //Example of extending (adding new column to user table)
 // var user = new Parse.User({
@@ -124,20 +161,7 @@ $('#signupBtn').on('submit', function(event) {
 // user.set("username", "user_name");
 // user.set("password", "user_pass");
 
-// user.signUp(null, {
-//   success: function(user) {
-//     // Hooray! Let them use the app now.
-//   },
-//   error: function(user, error) {
-//     // Show the error message somewhere and let the user try again.
-//     alert("Error: " + error.code + " " + error.message);
-//   },
 
-//   $( this ).trigger( 'reset' );
-//   $( '#signupForm' ).trigger( 'reset' );
-//   $( '#loginForm' ).trigger( 'reset' );
-
-// });
 
 
 

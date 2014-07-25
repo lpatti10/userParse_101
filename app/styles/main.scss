@@ -42,8 +42,6 @@ body {
   }
 }
 
-
-
 .username, .password {
   padding: 16px 16px 16px 16px;
   border: none;
@@ -59,4 +57,16 @@ body {
   @include button;
   margin-top: 10px;
   width: 100%;
+}
+
+.testBox {
+  background-color: red;
+  width: 100%;
+  height: 250px;
+}
+
+.userBox {
+  background-color: blue;
+  width: 100%;
+  height: 250px;
 }
