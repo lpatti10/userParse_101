@@ -11,17 +11,24 @@ var LibRouter = Backbone.Router.extend ({
 
 	routes: {
 		'' : 'home',
-		'user/:username' : 'logged_in'
+		'user' : 'logged_in'
 	},
 
 	home: function () {
-		$(".testBox").hide();
-		new LoggedInView({ collection: new_library});
+		$(".hero-unit").show();
+		$("#signupForm").show();
+		$("#loginForm").show();
+		$(".bookShelf").hide();
+		$('header').hide();
+		// $(".testBox").hide();
 	},
 
 	logged_in: function () {
-		$(".testBox").show();
-		// new LibraryBookView({ collection: new_library});
+		// $(".testBox").show();
+		$('header').show();
+		$(".bookShelf").show();
+		//SEEMS LIKE THIS INSTANCE OF THE COLLECTION (new_library) NEEDS TO BE DYNAMIC TO RELATE TO USER ID???
+		new LoggedInView({ collection: new_library});
 	}
 
 });

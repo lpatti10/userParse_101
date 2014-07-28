@@ -1,5 +1,20 @@
 Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDNpp1KaQucgsznkISsEB1aGi");
 
+///////////////////////////////////////////////////////////////
+
+// NEW INSTANCE OF COLLECTION
+var new_library = new Library();
+
+// NEW INSTANCE OF ROUTE
+new_library.fetch().done(function(){
+
+	window.bookRouter = new LibRouter ();
+	Backbone.history.start();
+
+});
+
+////////////////////////////////////////////////////////////////
+
 $('#signupForm').on('submit', function(event) {
 	
 	event.preventDefault();
@@ -35,14 +50,14 @@ $('#loginForm').on('submit', function(event) {
 
 	Parse.User.logIn($(this).find('.username').val(), $(this).find('.password').val(), {		
 	  success: function(user) {
-	    alert("success");
+	    console.log("success");
 	    
-	    //Navigate back home after form is complete.
-			// window.bookRouter.navigate('', { trigger: true });
+	    //Navigate to user route after form is complete.
+			window.bookRouter.navigate('user', { trigger: true });
 	  },
 
 	  error: function(user, error) {
-	    // The login failed. Check error to see why.
+	    alert("Wrong password. Try again.");
 	  }
 	});
 
@@ -52,14 +67,7 @@ $('#loginForm').on('submit', function(event) {
 
 ///////////////////////////////////////////////////////////////////
 
-var new_library = new Library();
 
-new_library.fetch().done(function(){
-
-	window.bookRouter = new LibRouter ();
-	Backbone.history.start();
-
-});
 
 //Example of extending (adding new column to user table)
 // var user = new Parse.User({

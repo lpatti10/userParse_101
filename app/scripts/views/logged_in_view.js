@@ -1,9 +1,9 @@
 var LoggedInView = Backbone.View.extend ({
 
-	el: '.hero-unit',
+	el: '.bookShelf',
 
 	events: {
-		// 'click .read' : 'toggleRead'
+		'click .home' : 'backHome'
 	},
 
 	initialize: function (){
@@ -12,23 +12,22 @@ var LoggedInView = Backbone.View.extend ({
 	},
 
 	render:function (){
-		// var template = Handlebars.compile($('#shelf_template').html());
-		// var rendered = template({ data: this.collection.toJSON()});
-		// this.$el.html(rendered);
-		//Hide form vs. sep. view based on no dynamic content
-		// $("#signupForm").hide();
-		// $("#loginForm").hide();
-		// $(".testBox").show();
+		$("#signupForm").hide();
+		$("#loginForm").hide();
+		var template = Handlebars.compile($('#shelf_template').html());
+		var rendered = template({ data: this.collection.toJSON()});
+		this.$el.html(rendered);
+	},
+
+	backHome: function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var homeClicked = $(event.target);
+		console.log('homeClicked');
+		
+		//Navigate to user route after form is complete.
+		window.bookRouter.navigate('', { trigger: true });
 	}
 
-	// toggleRead: function(event) {
-	// 	event.preventDefault();
-	// 	event.stopPropagation();
-	// 	var doneClicked = $(event.target).attr('id');
-	// 	console.log(doneClicked);
-	// 	var singleBook = this.collection.get(doneClicked);
-	// 	singleBook.set({read: true});
-	// 	singleBook.save();
-	// }
 
 });

@@ -14,12 +14,22 @@ var Library = Backbone.Collection.extend ({
 	url:"http://tiy-atl-fe-server.herokuapp.com/collections/library"
 
 });
+
+
+
+//WOULD WE NEED A NEW END POINT FOR EACH USER'S DATA??
+var Library2 = Backbone.Collection.extend ({
+
+	model: Book,
+	url:"http://tiy-atl-fe-server.herokuapp.com/collections/library"
+
+});
 var LoggedInView = Backbone.View.extend ({
 
-	el: '.hero-unit',
+	el: '.bookShelf',
 
 	events: {
-		// 'click .read' : 'toggleRead'
+		'click .home' : 'backHome'
 	},
 
 	initialize: function (){
@@ -28,24 +38,23 @@ var LoggedInView = Backbone.View.extend ({
 	},
 
 	render:function (){
-		// var template = Handlebars.compile($('#shelf_template').html());
-		// var rendered = template({ data: this.collection.toJSON()});
-		// this.$el.html(rendered);
-		//Hide form vs. sep. view based on no dynamic content
-		// $("#signupForm").hide();
-		// $("#loginForm").hide();
-		// $(".testBox").show();
+		$("#signupForm").hide();
+		$("#loginForm").hide();
+		var template = Handlebars.compile($('#shelf_template').html());
+		var rendered = template({ data: this.collection.toJSON()});
+		this.$el.html(rendered);
+	},
+
+	backHome: function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var homeClicked = $(event.target);
+		console.log('homeClicked');
+		
+		//Navigate to user route after form is complete.
+		window.bookRouter.navigate('', { trigger: true });
 	}
 
-	// toggleRead: function(event) {
-	// 	event.preventDefault();
-	// 	event.stopPropagation();
-	// 	var doneClicked = $(event.target).attr('id');
-	// 	console.log(doneClicked);
-	// 	var singleBook = this.collection.get(doneClicked);
-	// 	singleBook.set({read: true});
-	// 	singleBook.save();
-	// }
 
 });
 // CONSTRUCTOR-ONLY FILE
@@ -61,21 +70,43 @@ var LibRouter = Backbone.Router.extend ({
 
 	routes: {
 		'' : 'home',
-		'user/:username' : 'logged_in'
+		'user' : 'logged_in'
 	},
 
 	home: function () {
-		$(".testBox").hide();
-		new LoggedInView({ collection: new_library});
+		$(".hero-unit").show();
+		$("#signupForm").show();
+		$("#loginForm").show();
+		$(".bookShelf").hide();
+		$('header').hide();
+		// $(".testBox").hide();
 	},
 
 	logged_in: function () {
-		$(".testBox").show();
-		// new LibraryBookView({ collection: new_library});
+		// $(".testBox").show();
+		$('header').show();
+		$(".bookShelf").show();
+		//SEEMS LIKE THIS INSTANCE OF THE COLLECTION (new_library) NEEDS TO BE DYNAMIC TO RELATE TO USER ID???
+		new LoggedInView({ collection: new_library});
 	}
 
 });
 Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDNpp1KaQucgsznkISsEB1aGi");
+
+///////////////////////////////////////////////////////////////
+
+// NEW INSTANCE OF COLLECTION
+var new_library = new Library();
+
+// NEW INSTANCE OF ROUTE
+new_library.fetch().done(function(){
+
+	window.bookRouter = new LibRouter ();
+	Backbone.history.start();
+
+});
+
+////////////////////////////////////////////////////////////////
 
 $('#signupForm').on('submit', function(event) {
 	
@@ -112,14 +143,14 @@ $('#loginForm').on('submit', function(event) {
 
 	Parse.User.logIn($(this).find('.username').val(), $(this).find('.password').val(), {		
 	  success: function(user) {
-	    alert("success");
+	    console.log("success");
 	    
-	    //Navigate back home after form is complete.
-			// window.bookRouter.navigate('', { trigger: true });
+	    //Navigate to user route after form is complete.
+			window.bookRouter.navigate('user', { trigger: true });
 	  },
 
 	  error: function(user, error) {
-	    // The login failed. Check error to see why.
+	    alert("Wrong password. Try again.");
 	  }
 	});
 
@@ -129,14 +160,7 @@ $('#loginForm').on('submit', function(event) {
 
 ///////////////////////////////////////////////////////////////////
 
-var new_library = new Library();
 
-new_library.fetch().done(function(){
-
-	window.bookRouter = new LibRouter ();
-	Backbone.history.start();
-
-});
 
 //Example of extending (adding new column to user table)
 // var user = new Parse.User({
