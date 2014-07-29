@@ -28,7 +28,7 @@ var LibRouter = Backbone.Router.extend ({
 		$('header').show();
 		$(".bookShelf").show();
 		//SEEMS LIKE THIS INSTANCE OF THE COLLECTION (new_library) NEEDS TO BE DYNAMIC TO RELATE TO USER ID???
-		new LoggedInView({ collection: new_library});
+		new ValidationView({ collection: new_library});
 	}
 
 });

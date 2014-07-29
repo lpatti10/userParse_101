@@ -1,9 +1,55 @@
 Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDNpp1KaQucgsznkISsEB1aGi");
 
-///////////////////////////////////////////////////////////////
 
-// NEW INSTANCE OF COLLECTION
+
+
+
+//PARSE ASSOCIATIONS NATIVE CODE
+// var user = Parse.User.current();
+ 
+// // Make a new post
+// var Post = Parse.Object.extend("Post");
+// var post = new Post();
+// post.set("title", "My New Post");
+// post.set("body", "This is some great content.");
+// post.set("user", user);
+// post.save(null, {
+//   success: function(post) {
+//     // Find all posts by the current user
+//     var query = new Parse.Query(Post);
+//     query.equalTo("user", user);
+//     query.find({
+//       success: function(usersPosts) {
+//         // userPosts contains all of the posts by the current user.
+//       }
+//     });
+//   }
+// });
+
+///////////////////////////////////////////////////////////////////
+
+// NEW INSTANCE OF COLLECTION LIBRARY
 var new_library = new Library();
+
+
+
+//PARSE QUERY NATIVE CODE
+var query = new Parse.Query(Parse.User);
+query.equalTo("user", Parse.User.current());
+// query.find({
+//   success: function(women) {
+//     // Do stuff
+//   }
+// });
+
+// // Setup the query for the collection to look for todos from the current user
+//       this.todos.query = new Parse.Query(Todo);
+//       this.todos.query.equalTo("user", Parse.User.current());
+        
+//       this.todos.bind('add',     this.addOne);
+//       this.todos.bind('reset',   this.addAll);
+//       this.todos.bind('all',     this.render);
+
 
 // NEW INSTANCE OF ROUTE
 new_library.fetch().done(function(){
@@ -13,61 +59,20 @@ new_library.fetch().done(function(){
 
 });
 
-////////////////////////////////////////////////////////////////
+// // Fetch all the todo items for this user
+//       this.todos.fetch();
 
-$('#signupForm').on('submit', function(event) {
-	
-	event.preventDefault();
-	
-	//In place of model object... it is extendable too.
-	var user = new Parse.User();
+//       state.on("change", this.filter, this);
+//     },
 
-	user.set("username", $(this).find('.username').val());
-	console.log('gotcha username');
-
-	user.set("password", $(this).find('.password').val());
-	console.log('gotcha password');
-	 
-	user.signUp(null, {
-	  success: function(user) {
-	    // redirect to logged-in view here
-	  },
-	  error: function(user, error) {
-	    // Show the error message somewhere and let the user try again.
-	    alert("Error: " + error.code + " " + error.message);
-	  }
-	});
-
-	$(this).trigger('reset');
-
-});
-
-/////////////////////////////////////////////////////////////
-
-$('#loginForm').on('submit', function(event) {
-	
-	event.preventDefault();
-
-	Parse.User.logIn($(this).find('.username').val(), $(this).find('.password').val(), {		
-	  success: function(user) {
-	    console.log("success");
-	    
-	    //Navigate to user route after form is complete.
-			window.bookRouter.navigate('user', { trigger: true });
-	  },
-
-	  error: function(user, error) {
-	    alert("Wrong password. Try again.");
-	  }
-	});
-
-		$(this).trigger('reset');
-
-});
-
-///////////////////////////////////////////////////////////////////
-
-
+//     // Logs out the user and shows the login view
+//     logOut: function(e) {
+//       Parse.User.logOut();
+//       new LogInView();
+//       this.undelegateEvents();
+//       delete this;
+//     },
+//////////////////////////////////////////////////////////////////
 
 //Example of extending (adding new column to user table)
 // var user = new Parse.User({

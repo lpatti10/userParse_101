@@ -1,9 +1,11 @@
-var LoggedInView = Backbone.View.extend ({
+// var LoggedInView = Backbone.View.extend ({
 
-	el: '.bookShelf',
+var UserView = Parse.View.extend ({	
+
+	el: ".bookShelf",
 
 	events: {
-		'click .home' : 'backHome'
+		"click .home" : "backHome"
 	},
 
 	initialize: function (){
