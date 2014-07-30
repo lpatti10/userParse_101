@@ -42,7 +42,10 @@ body {
   }
 }
 
-.username, .password {
+#login_username, 
+#login_password, 
+#signup_username, 
+#signup_password {
   padding: 16px 16px 16px 16px;
   border: none;
   z-index: 2;

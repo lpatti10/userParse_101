@@ -10,25 +10,37 @@
 var LibRouter = Backbone.Router.extend ({
 
 	routes: {
-		'' : 'home',
-		'user' : 'logged_in'
+		'' : 'home', //Corresponds with 'ValidationView'
+		'user' : 'logged_in' //Corresponds with 'UserView'
+	},
+
+	initialize: function() {
+		this.appView = new App.View();
 	},
 
 	home: function () {
-		$(".hero-unit").show();
-		$("#signupForm").show();
-		$("#loginForm").show();
-		$(".bookShelf").hide();
-		$('header').hide();
+		if(!App.currentUser) return App.router.navigate('user', {trigger: true});
+
+		var validation = new ValidationView();
+
+		// $(".hero-unit").show();
+		// $("#signupForm").show();
+		// $("#loginForm").show();
+		// $(".bookShelf").hide();
+		// $('header').hide();
 		// $(".testBox").hide();
 	},
 
 	logged_in: function () {
+		if(App.currentUser) return App.router.navigate('', {trigger: true});
+		
+		showUser(App.currentUser);
+		var myBooks = new UserView();
+		this.appView.showView(myBooks);
 		// $(".testBox").show();
-		$('header').show();
-		$(".bookShelf").show();
-		//SEEMS LIKE THIS INSTANCE OF THE COLLECTION (new_library) NEEDS TO BE DYNAMIC TO RELATE TO USER ID???
-		new ValidationView({ collection: new_library});
+		// $('header').show();
+		// $(".bookShelf").show();
+		// new ValidationView({ collection: new_library});
 	}
 
 });

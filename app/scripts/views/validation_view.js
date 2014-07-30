@@ -17,8 +17,8 @@ var ValidationView = Parse.View.extend ({
 	signUp: function(event) {
 		
 		var self = this;
-		var username = this.$(".username").val();
-		var password = this.$(".password").val();
+		var username = this.$("#signup_username").val();
+		var password = this.$("#signup_password").val();
 
 		var user = new Parse.User();
 					
@@ -45,10 +45,12 @@ var ValidationView = Parse.View.extend ({
 
   },
 
+////////////////////////////////////////////////////////////////
+
 	logIn: function(event) {
 		var self = this;
-		var username = this.$(".username").val();
-		var password = this.$(".password").val();
+		var username = this.$("#login_username").val();
+		var password = this.$("#login_password").val();
 
 
 		Parse.User.logIn(username, password, {
@@ -68,6 +70,8 @@ var ValidationView = Parse.View.extend ({
 
   },
 
+////////////////////////////////////////////////////////////////
+
 	render: function() {
 		var template = Handlebars.compile($('#shelf_template').html());
 		var rendered = template({ data: this.collection.toJSON()});
@@ -78,7 +82,7 @@ var ValidationView = Parse.View.extend ({
 
 
 /////////////////////////////////////////////////////////////
-
+//ORIGINAL LOG-IN
 					// $('#loginForm').on('submit', function(event) {
 						
 					// 	event.preventDefault();
@@ -101,7 +105,7 @@ var ValidationView = Parse.View.extend ({
 					// });
 
 ///////////////////////////////////////////////////////////////////
-
+//ORIGINAL SIGN-UP
 					// $('#signupForm').on('submit', function(event) {
 					// event.preventDefault();
 					// var user = new Parse.User();

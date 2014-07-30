@@ -1,9 +1,71 @@
+//INITIALIZE PARSE
 Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDNpp1KaQucgsznkISsEB1aGi");
 
+//INITIALIZE APP
+var App = {};
 
+//CHECK FOR USER
+App.currentUser = Parse.User.current();
 
+//MANAGING APP VIEWS
+App.View = function (){
+	this.showView = function(view) {
+		if (this.currentView) {
+			this.currentView.remove();
+		}
+		this.currentView = view;
+		this.currentView.render();
+		$('.bookShelf').html(this.currentView.el);
+	}
+}
 
+//SCRIPT TO UPDATE USER FIELD
+var showUser = function(user) {
+	var name = user.get('username');
+	$('.profile').text(name);							//ADD TO INDEX!
+};
 
+//"FIRE UP" + START LISTENING
+App.router = new LibRouter();
+Backbone.history.start();
+
+//CREATE A NEW BOOK 
+$('#newBook').on('submit', function (event) {
+
+	event.preventDefault();
+
+	//NEW INSTANCE OF BOOK MODEL
+	var temp_book = new Book();
+})
+
+//SET PROPERTIES
+var validate = temp_book.set({
+	name: $('.book_title').val(),				//ADD TO INDEX!
+	author: $('book_author').val(),			//ADD TO INDEX!
+	user: App.currentUser
+}, {validate: true});
+
+//SAVE BOOK
+if(validate !==false) {
+	temp_book.setACL(new Parse.ACL(Parse.User.current()));
+	temp_book.save(null, {
+		success: function(temp_book) {
+			//ADDS TO LIBRARY COLLECTION
+			App.new_library.add(temp_book);
+			//CLEAR FORM
+			$(this).trigger('reset');
+		}
+	});
+// } else { alert('All fields required.');		//FIX BRACKETS!!!!!!!!!!!!!!!!!
+// }
+// });
+
+//LOGOUT
+$('.logout button').on('click', function () {				//ADD TO INDEX!
+	Parse.User.logout();
+	App.currentUser = Parse.User.current();
+	App.router.navigate('user', {trigger: true});
+});
 //PARSE ASSOCIATIONS NATIVE CODE
 // var user = Parse.User.current();
  
@@ -29,13 +91,13 @@ Parse.initialize("aUOgGVzu66uKF45tTRiIidlQJ1J9gfZjRWiNmrJC", "bjOQ1QJn0D2zHoNlDN
 ///////////////////////////////////////////////////////////////////
 
 // NEW INSTANCE OF COLLECTION LIBRARY
-var new_library = new Library();
+// var new_library = new Library();
 
 
 
 //PARSE QUERY NATIVE CODE
-var query = new Parse.Query(Parse.User);
-query.equalTo("user", Parse.User.current());
+// var query = new Parse.Query(Parse.User);
+// query.equalTo("user", Parse.User.current());
 // query.find({
 //   success: function(women) {
 //     // Do stuff
@@ -52,12 +114,12 @@ query.equalTo("user", Parse.User.current());
 
 
 // NEW INSTANCE OF ROUTE
-new_library.fetch().done(function(){
+// new_library.fetch().done(function(){
 
-	window.bookRouter = new LibRouter ();
-	Backbone.history.start();
+	// window.bookRouter = new LibRouter ();
+	// Backbone.history.start();
 
-});
+// });
 
 // // Fetch all the todo items for this user
 //       this.todos.fetch();
@@ -80,22 +142,6 @@ new_library.fetch().done(function(){
 //     favorite: 'jack'
 //   }
 
-      //can also add initialize other functions here
-// });
-
-
-
-// // $(signupForm).on('submit' function (event) {
-// // 	event.preventDefaults();
-
-// // 	var user_name = $(this).find(#username).val();
-// // 	var user_pass = $(this).find(#password).val();
-
-// // });
-
-
-// user.set("username", "user_name");
-// user.set("password", "user_pass");
 
 
 
