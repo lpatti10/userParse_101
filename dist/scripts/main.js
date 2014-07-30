@@ -1,5 +1,14 @@
-var Book = Backbone.Model.extend({
-	idAttribute: '_id',
+var Book = Parse.Object.extend({
+	className: 'Book',
+
+	validate: function (attrs) {
+		if (!attrs.title) {
+			return 'Please enter a Sundays song title.';
+		}
+		if(!attrs.//...)
+	}
+
+	idAttribute: 'objectId',
 
 	defaults: {
 		title: '',
@@ -8,22 +17,16 @@ var Book = Backbone.Model.extend({
 	}
 
 });
-var Library = Backbone.Collection.extend ({
+var Library = Parse.Collection.extend ({
 
 	model: Book,
-	url:"http://tiy-atl-fe-server.herokuapp.com/collections/library"
+	// url:"http://tiy-atl-fe-server.herokuapp.com/collections/library"
 
 });
 
 
 
-// //WOULD WE NEED A NEW END POINT FOR EACH USER'S DATA??
-// var Library2 = Backbone.Collection.extend ({
 
-// 	model: Book,
-// 	url:"http://tiy-atl-fe-server.herokuapp.com/collections/library"
-
-// });
 //THIS IS OUR OPENING (HOME) VIEW WITH 2 FORMS
 
 ////////////////////////////////////////////////////////////////
